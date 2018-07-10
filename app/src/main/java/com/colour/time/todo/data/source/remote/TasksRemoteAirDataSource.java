@@ -121,6 +121,7 @@ public class TasksRemoteAirDataSource implements TasksDataSource {
             @Override
             public void onFailure(Call<TasksResponseVo> call, Throwable throwable) {
                 Log.e(TAG,"onFailure " + throwable.getMessage());
+                callback.onDataNotAvailable();
             }
         });
     }
@@ -133,7 +134,7 @@ public class TasksRemoteAirDataSource implements TasksDataSource {
     @Override
     public void getTask(@NonNull String taskId, final @NonNull GetTaskCallback callback) {
         final Task task = TASKS_SERVICE_DATA.get(taskId);
-
+        //TODO
         // Simulate network by delaying the execution.
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
