@@ -17,7 +17,7 @@ class TaskType():
         self.COMPLETED_TASKS =2
 
 
-filepath="test2.db"
+filepath="test.db"
 
 class Task :
     def __init__(self,id,title="",description='',completed=False,ticks_expect=0,ticks_consume=0,father_id=0,selected=False,sub_ids=None,create_time=0,user_id=0):

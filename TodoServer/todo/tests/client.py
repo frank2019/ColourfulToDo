@@ -2,8 +2,13 @@ import requests
 import time
 import json
 
-from tasksql import *
+import os
+import sys
 
+# from t.asksql import *
+sys.path.append("..") 
+
+from todo.tasksql  import *
 
 def test_api_test():
     url = 'http://localhost:8000/test'
@@ -78,4 +83,4 @@ if __name__ == "__main__":
     # test_api_insert()
     test_api_query()
     # test_api_update()
-    test_api_del()
+    # test_api_del()
