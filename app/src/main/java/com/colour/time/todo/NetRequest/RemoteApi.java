@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.colour.time.todo.NetRequest.Converter.MyConverterFactory;
 import com.colour.time.todo.NetRequest.vo.BaseResponseVo;
+import com.colour.time.todo.NetRequest.vo.DelRequestVo;
 import com.colour.time.todo.NetRequest.vo.QueryRequestVo;
 import com.colour.time.todo.NetRequest.vo.TaskRemote;
 import com.colour.time.todo.NetRequest.vo.TasksRequestVo;
@@ -117,13 +118,13 @@ public class RemoteApi {
         call.enqueue(callback);
     }
 
-    public void delTasks(TasksRequestVo tasksRequestVo, Callback<BaseResponseVo> callback){
+    public void delTasks(DelRequestVo delRequestVo, Callback<BaseResponseVo> callback){
         if(mRetrofit == null){
             init();
         }
-        String s = mGson.toJson(tasksRequestVo);
+        String s = mGson.toJson(delRequestVo);
         RequestBody requestBody = RequestBody.create(MediaType.parse("Content-Type, application/json"), s);
-        Call<BaseResponseVo> call = mRequest.addTasksCall(requestBody);
+        Call<BaseResponseVo> call = mRequest.delTasksCall(requestBody);
         call.enqueue(callback);
     }
 
@@ -133,7 +134,7 @@ public class RemoteApi {
         }
         String s = mGson.toJson(tasksRequestVo);
         RequestBody requestBody = RequestBody.create(MediaType.parse("Content-Type, application/json"), s);
-        Call<BaseResponseVo> call = mRequest.addTasksCall(requestBody);
+        Call<BaseResponseVo> call = mRequest.updateTasksCall(requestBody );
         call.enqueue(callback);
     }
 

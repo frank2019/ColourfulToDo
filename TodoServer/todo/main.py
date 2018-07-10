@@ -51,17 +51,23 @@ class TasksRequestHandler(BaseHTTPRequestHandler):
             return tasks_all
         out = []
 
+        print("-----")
+
         task_type = 1
         start_time = 0
         end_time = int(round(time.time() * 1000))
+        user_id =0
         try:
             task_type = filter_arg['type']
             start_time = filter_arg['start_time']
             end_time = filter_arg['end_time']
+            user_id = filter_arg['user_id']
         except Exception as e:
             print("filter e=%r" %(e))
 
         for item in tasks_all:
+            '''
+            print("item: %r" %(item.to_string()))
             if item.completed and task_type == 1:
                 continue
             if not item.completed and task_type == 2:
@@ -71,7 +77,9 @@ class TasksRequestHandler(BaseHTTPRequestHandler):
             if item.create_time > end_time:
                 continue
             print(type(item.selected))
-            out.append(item)
+            '''
+            if item.user_id == user_id :
+                out.append(item)
         return out
 
 
@@ -83,8 +91,9 @@ class TasksRequestHandler(BaseHTTPRequestHandler):
         try :
             user_id = args['user_id']
             tasks_all = tasksql.select(user_id)
-            #print("tasks_all %r" %(tasks_all))
+            print("tasks_all %r" %(tasks_all))
             out_tasks = self.filter_tasks(tasks_all,args)
+            print("out tasks %r" %(out_tasks))
 
             dict = {'status':0,'message':'success'}
             dict['tasks'] = out_tasks

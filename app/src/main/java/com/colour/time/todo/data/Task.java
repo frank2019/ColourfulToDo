@@ -34,7 +34,13 @@ import java.util.UUID;
  * Immutable model class for a Task.
  */
 @Entity(tableName = "tasks")
-public final class Task {
+public  class Task {
+    //mFourQuadrantTag
+    static public String  TAG_Important_Urgent = "Important_NoneUrgent";
+    static public String  TAG_Important_NoneUrgent = "Important_NoneUrgent";
+    static public String  TAG_NoneImportant_Urgent = "NoneImportant_Urgent";
+    static public String  TAG_NoneImportant_NoneUrgent = "NoneImportant_NoneUrgent";
+
 
     @SerializedName("id")
     @PrimaryKey
@@ -321,6 +327,6 @@ public final class Task {
 */
     @Override
     public String toString() {
-        return "Task with title " + mTitle;
+        return "Task with title=" + mTitle + " id=" + mId;
     }
 }

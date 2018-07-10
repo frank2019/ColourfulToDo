@@ -1,17 +1,19 @@
 package com.colour.time.todo.NetRequest.vo;
 
+import com.colour.time.todo.data.Task;
+
 /**
  * Created by mx on 2018/7/2.
  */
 
 public class TasksRequestVo extends BaseRequestVo{
-    protected  TaskRemote[]  tasks;
+    protected  Task[]  tasks;
 
-    public TaskRemote[] getTasks() {
+    public Task[] getTasks() {
         return tasks;
     }
 
-    public void setTasks(TaskRemote[] tasks) {
+    public void setTasks(Task[] tasks) {
         this.tasks = tasks;
     }
 }

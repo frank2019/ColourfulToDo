@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.colour.time.todo.NetRequest.RemoteApi;
 import com.colour.time.todo.NetRequest.vo.BaseResponseVo;
+import com.colour.time.todo.NetRequest.vo.DelRequestVo;
 import com.colour.time.todo.NetRequest.vo.QueryRequestVo;
 import com.colour.time.todo.NetRequest.vo.TaskRemote;
 import com.colour.time.todo.NetRequest.vo.TasksRequestVo;
@@ -15,6 +16,7 @@ import com.colour.time.todo.data.source.TasksRepository;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,14 +82,14 @@ public class TestUseCase {
     }
 
     /**
-     * 测试远程仓库接口API
+     * 测试远程仓库接口API   网络接口API
      * @param context
      */
     public void testRemoteRepository(final Context context){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Long i =  System.currentTimeMillis();
+                Long current =  System.currentTimeMillis();
 
                 Long start =0L;
                 //yyyy-MM-dd HH:mm:ss
@@ -96,8 +98,11 @@ public class TestUseCase {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-                QueryRequestVo queryRequestVo = new QueryRequestVo(QueryRequestVo.ACTIVE_TASKS,start,i,1,"", i);
+                Integer user_id = 1;
+                String  token = "token";
+/*
+                Log.e(TAG,"测试API: 查询");
+                QueryRequestVo queryRequestVo = new QueryRequestVo(QueryRequestVo.ACTIVE_TASKS,start,current,user_id,token, current);
 
                 RemoteApi.getInstance().getTasks(queryRequestVo, new Callback<TasksResponseVo>() {
                     @Override
@@ -111,29 +116,17 @@ public class TestUseCase {
                     }
                 });
 
+                Log.e(TAG,"测试API: 增加");
+
                 TasksRequestVo tasksRequestVo =  new TasksRequestVo();
                 tasksRequestVo.setToken("token");
                 tasksRequestVo.setTs(System.currentTimeMillis());
 
-                TaskRemote[] taskRemotes =  new TaskRemote[1];
-                TaskRemote taskRemote = new TaskRemote();
-                taskRemote.setCompleted(false);
-                taskRemote.setCreate_time(System.currentTimeMillis());
-                taskRemote.setTitle("测试项目");
-                taskRemote.setDescription("这是一个测试类的项目");
-                taskRemote.setFather_id(0);
-                taskRemote.setUser_id(1);
-                taskRemote.setTicks_consume(0);
-                taskRemote.setTicks_expect(5);
-                taskRemote.setSelected(false);
-                int[] sub_ids =  new  int[2];
-                sub_ids[0]=1;
-                sub_ids[1] =4;
-                taskRemote.setSub_ids(sub_ids);
-                taskRemotes[0] = taskRemote;
+                Task[]  tasks = new  Task[1];
+                tasks[0] = new Task(UUID.randomUUID().toString(),"测试Title","这是一个测试项目",false,10,0,0,false,"0,1",System.currentTimeMillis(),1,Task.TAG_Important_Urgent);
 
-                tasksRequestVo.setTasks(taskRemotes);
 
+                tasksRequestVo.setTasks(tasks);
 
                 RemoteApi.getInstance().addTasks(tasksRequestVo, new Callback<BaseResponseVo>() {
                     @Override
@@ -145,12 +138,60 @@ public class TestUseCase {
                     public void onFailure(Call<BaseResponseVo> call, Throwable throwable) {
                         Log.e("RemoteApi","addTasks Error " +  throwable.getMessage());
                     }
+                });*/
+
+                ////////
+               /* Log.e(TAG,"测试API: 更新");
+
+                TasksRequestVo tasksRequestVo2 =  new TasksRequestVo();
+                tasksRequestVo2.setToken("token");
+                tasksRequestVo2.setTs(System.currentTimeMillis());
+
+                Task[]  tasks2 = new  Task[1];
+                tasks2[0] = new Task("7a04c831-95a6-49ed-b1cb-92b1c800df67","new Title","new 这是一个测试项目",false,10,0,0,false,"0,1",System.currentTimeMillis(),1,Task.TAG_Important_Urgent);
+
+
+                tasksRequestVo2.setTasks(tasks2);
+
+                RemoteApi.getInstance().updateTasks(tasksRequestVo2, new Callback<BaseResponseVo>() {
+                    @Override
+                    public void onResponse(Call<BaseResponseVo> call, Response<BaseResponseVo> response) {
+                        Log.e("RemoteApi","updateTasks " +  response.body().toString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponseVo> call, Throwable throwable) {
+                        Log.e("RemoteApi","updateTasks Error " +  throwable.getMessage());
+                    }
+                });
+*/
+
+                Log.e(TAG,"测试API: 删除");
+
+                DelRequestVo delRequestVo = new DelRequestVo();
+                delRequestVo.setToken("token");
+                delRequestVo.setTs(System.currentTimeMillis());
+
+                String [] ids =  new  String[2];
+                ids[0] =  "3";
+                ids[1] = "2";
+                delRequestVo.setTsaks_id(ids);
+
+
+                RemoteApi.getInstance().delTasks(delRequestVo, new Callback<BaseResponseVo>() {
+                    @Override
+                    public void onResponse(Call<BaseResponseVo> call, Response<BaseResponseVo> response) {
+                        Log.e("RemoteApi","DelRequestVo " +  response.body().toString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponseVo> call, Throwable throwable) {
+                        Log.e("RemoteApi","DelRequestVo Error " +  throwable.getMessage());
+                    }
                 });
 
-
-                //RemoteApi.getInstance().queryTasks(queryRequestVo);
             }
-        });
+        }).start();
     }
 
 
