@@ -60,7 +60,7 @@ public  class Task {
 
     @SerializedName("completed")
     @ColumnInfo(name = "completed")
-    private final boolean mCompleted;
+    private  boolean mCompleted;
 
     @Nullable
     @SerializedName("ticks_expect")
@@ -290,6 +290,11 @@ public  class Task {
     public void setFourQuadrantTag(@Nullable String mFourQuadrantTag) {
         this.mFourQuadrantTag = mFourQuadrantTag;
     }
+
+    public void setCompleted(Boolean completed){
+        mCompleted = completed;
+    }
+
 
     @Override
     public int hashCode() {

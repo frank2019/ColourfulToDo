@@ -82,6 +82,22 @@ class TasksRequestHandler(BaseHTTPRequestHandler):
                 out.append(item)
         return out
 
+    def handle_task_query_id(self,args):
+        print("handle_task_query_id %r" %(args))
+        dict1 = {'status':10001,'message':"error parameter"}
+        if args is None:
+            return dict1
+        try :
+            task_id = args['task_id']
+            task = tasksql.select_by_task_id(task_id)
+            print("tasks_all %r" %(task))
+
+            dict = {'status':0,'message':'success'}
+            dict['tasks'] = task
+            return dict
+        except Exception as e:
+            print("e=%r" %(e))
+            return dict1
 
     def handle_task_query(self,args):
         print("handle_tasks_query %r" %(args))
@@ -164,6 +180,9 @@ class TasksRequestHandler(BaseHTTPRequestHandler):
         elif action == '/tasks_del':
             ret = self.handle_tasks_del(args)
             buf = json.dumps(ret)
+        elif action == '/task_query':
+            ret = self.handle_task_query_id(args)
+            buf = json.dumps(ret,default=lambda obj: obj.__dict__,sort_keys=True)
         else :
             buf='{}'
 

@@ -3,6 +3,7 @@ package com.colour.time.todo.NetRequest;
 
 import com.colour.time.todo.NetRequest.vo.BaseResponseVo;
 import com.colour.time.todo.NetRequest.vo.QueryRequestVo;
+import com.colour.time.todo.NetRequest.vo.TaskResponseVo;
 import com.colour.time.todo.NetRequest.vo.TasksRequestVo;
 import com.colour.time.todo.NetRequest.vo.TasksResponseVo;
 import com.colour.time.todo.NetRequest.vo.Translation;
@@ -28,6 +29,10 @@ public interface NetApi {
     @Headers({"Content-Type:application/json;charset=utf-8", "Accept:application/json;"})
     @POST("tasks_query")
     Call<TasksResponseVo> queryTasksCall(@Body RequestBody body);
+
+    @Headers({"Content-Type:application/json;charset=utf-8", "Accept:application/json;"})
+    @POST("task_query")
+    Call<TaskResponseVo> queryTaskByIdCall(@Body RequestBody body);
 
     /*@Headers({"Content-Type:application/json;charset=utf-8", "Accept:application/json;"})
     @POST("tasks_query")

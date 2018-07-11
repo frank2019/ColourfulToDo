@@ -85,7 +85,7 @@ public class TasksActivity extends AppCompatActivity {
          */
         //TODO   测试代码
        // TestUseCase.getInstance().testTasksRepository(getApplicationContext());
-        TestUseCase.getInstance().testRemoteRepository(getApplicationContext());
+        //TestUseCase.getInstance().testRemoteRepository(getApplicationContext());
 
 
         // Create the presenter
@@ -118,7 +118,6 @@ public class TasksActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(CURRENT_FILTERING_KEY, mTasksPresenter.getFiltering());
-
         super.onSaveInstanceState(outState);
     }
 

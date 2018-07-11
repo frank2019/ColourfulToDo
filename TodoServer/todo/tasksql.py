@@ -90,12 +90,19 @@ class Tasksql:
         cursor = self.cu.execute("select * from tasks where user_id=%d" %(user_id))
         list = []
         for row in cursor:
-            str_sub_ids = to_int_array(row[8])
-
+            # str_sub_ids = to_int_array(row[8])
             task = Task(row[0],row[1],row[2],int_to_bool(row[3]),row[4],row[5],row[6],int_to_bool(row[7]),row[8],row[9],row[10])
             list.append(task)
 
         return list
+    def select_by_task_id(self,id):  
+        cursor = self.cu.execute("select * from tasks where id='%s'" %(id))
+        list = []
+        for row in cursor:
+            task = Task(row[0],row[1],row[2],int_to_bool(row[3]),row[4],row[5],row[6],int_to_bool(row[7]),row[8],row[9],row[10])
+            return task
+        return None
+
     def delete(self,id):
         #self.cu.execute('DELETE from tasks where id=?',id)
         self.cu.execute('DELETE from tasks where id=%s' % id)

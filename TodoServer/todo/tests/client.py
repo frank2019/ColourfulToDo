@@ -46,6 +46,19 @@ def test_api_query():
 
     r=requests.post(url,data=body)
     print("r=%r" %(r.text))
+def test_api_query_by_id():
+    url = 'http://localhost:8000/task_query'
+    data={}
+    data['task_id']="7a04c831-95a6-49ed-b1cb-92b1c800df67"
+    data['token']="token111"
+    data['ts']= int(round(time.time() * 1000))
+
+    body = json.dumps(data)
+    #body = json.dumps(data,default=lambda obj: obj.__dict__,sort_keys=True,indent =4)
+    print('body %s' %(body) )
+
+    r=requests.post(url,data=body)
+    print("r=%r" %(r.text))
 
 def test_api_update():
     url = 'http://localhost:8000/tasks_update'
@@ -81,6 +94,7 @@ def test_api_del():
 if __name__ == "__main__":
     #test_api_test()
     # test_api_insert()
-    test_api_query()
+    test_api_query_by_id()
+    # test_api_query()
     # test_api_update()
     # test_api_del()

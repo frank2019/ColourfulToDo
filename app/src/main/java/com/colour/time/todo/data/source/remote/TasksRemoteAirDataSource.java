@@ -21,12 +21,16 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.colour.time.todo.NetRequest.RemoteApi;
+import com.colour.time.todo.NetRequest.vo.BaseResponseVo;
+import com.colour.time.todo.NetRequest.vo.QueryByIdRequestVo;
 import com.colour.time.todo.NetRequest.vo.QueryRequestVo;
 import com.colour.time.todo.NetRequest.vo.TaskRemote;
+import com.colour.time.todo.NetRequest.vo.TaskResponseVo;
 import com.colour.time.todo.NetRequest.vo.TasksRequestVo;
 import com.colour.time.todo.NetRequest.vo.TasksResponseVo;
 import com.colour.time.todo.data.Task;
 import com.colour.time.todo.data.source.TasksDataSource;
+import com.colour.time.todo.util.AppConstants;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -53,13 +57,13 @@ public class TasksRemoteAirDataSource implements TasksDataSource {
 
 
 
-    private final static Map<String, Task> TASKS_SERVICE_DATA;
+  /*  private final static Map<String, Task> TASKS_SERVICE_DATA;
 
     static {
         TASKS_SERVICE_DATA = new LinkedHashMap<>(2);
         addTask("Build tower in Pisa", "Ground looks good, no foundation work required.");
         addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!");
-    }
+    }*/
 
     public static TasksRemoteAirDataSource getInstance() {
         if (INSTANCE == null) {
@@ -71,14 +75,14 @@ public class TasksRemoteAirDataSource implements TasksDataSource {
     // Prevent direct instantiation.
     private TasksRemoteAirDataSource() {}
 
-    private static void addTask(String title, String description) {
+  /*  private static void addTask(String title, String description) {
         Task newTask = new Task(title, description);
         TASKS_SERVICE_DATA.put(newTask.getId(), newTask);
 
         TasksRequestVo tasksRequestVo =  new TasksRequestVo();
         //RemoteApi.getInstance().addTasks(tasksRequestVo,null);
 
-    }
+    }*/
 
     /**
      * Note: {@link LoadTasksCallback#onDataNotAvailable()} is never fired. In a real remote data
@@ -96,7 +100,7 @@ public class TasksRemoteAirDataSource implements TasksDataSource {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        QueryRequestVo queryRequestVo = new QueryRequestVo(QueryRequestVo.ACTIVE_TASKS,start,i,1,"", i);
+        QueryRequestVo queryRequestVo = new QueryRequestVo(QueryRequestVo.ACTIVE_TASKS,start,i,1,AppConstants.TOKEN, i);
 
 
         RemoteApi.getInstance().getTasks(queryRequestVo, new Callback<TasksResponseVo>() {
@@ -133,41 +137,89 @@ public class TasksRemoteAirDataSource implements TasksDataSource {
      */
     @Override
     public void getTask(@NonNull String taskId, final @NonNull GetTaskCallback callback) {
-        final Task task = TASKS_SERVICE_DATA.get(taskId);
-        //TODO
-        // Simulate network by delaying the execution.
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        RemoteApi.getInstance().getTaskById(new QueryByIdRequestVo(taskId, AppConstants.TOKEN,System.currentTimeMillis()), new Callback<TaskResponseVo>() {
             @Override
-            public void run() {
-                callback.onTaskLoaded(task);
+            public void onResponse(Call<TaskResponseVo> call, Response<TaskResponseVo> response) {
+                callback.onTaskLoaded(response.body().getTask());
             }
-        }, SERVICE_LATENCY_IN_MILLIS);
+
+            @Override
+            public void onFailure(Call<TaskResponseVo> call, Throwable throwable) {
+                callback.onDataNotAvailable();
+            }
+        });
+
     }
 
     @Override
     public void saveTask(@NonNull Task task) {
-        TASKS_SERVICE_DATA.put(task.getId(), task);
-        //RemoteApi.getInstance().addTasks();
+        TasksRequestVo tasksRequestVo =  new TasksRequestVo();
+        tasksRequestVo.setToken(AppConstants.TOKEN);
+        tasksRequestVo.setTs(System.currentTimeMillis());
+        Task[] tasks = new  Task[1];
+        tasks[0] = task;
+        tasksRequestVo.setTasks(tasks);
+
+        RemoteApi.getInstance().addTasks(tasksRequestVo, new Callback<BaseResponseVo>() {
+            @Override
+            public void onResponse(Call<BaseResponseVo> call, Response<BaseResponseVo> response) {
+                Log.d(TAG,"onResponse addTasks");
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponseVo> call, Throwable throwable) {
+                Log.d(TAG,"onFailure addTasks");
+            }
+        });
+
+    }
+
+    public void updateTask(@NonNull Task task){
+
+        TasksRequestVo tasksRequestVo =  new TasksRequestVo();
+        tasksRequestVo.setToken(AppConstants.TOKEN);
+        tasksRequestVo.setTs(System.currentTimeMillis());
+        Task[] tasks = new  Task[1];
+        tasks[0] =  task;
+        tasksRequestVo.setTasks(tasks);
+
+
+        RemoteApi.getInstance().updateTasks(tasksRequestVo, new Callback<BaseResponseVo>() {
+            @Override
+            public void onResponse(Call<BaseResponseVo> call, Response<BaseResponseVo> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponseVo> call, Throwable throwable) {
+
+            }
+        });
 
     }
 
     @Override
     public void completeTask(@NonNull Task task) {
-        Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getId(), true);
-        TASKS_SERVICE_DATA.put(task.getId(), completedTask);
+        /*Task completedTask = new Task(task.getTitle(), task.getDescription(), task.getId(), true);
+        TASKS_SERVICE_DATA.put(task.getId(), completedTask);*/
+        task.setCompleted(true);
+        updateTask(task);
     }
 
     @Override
     public void completeTask(@NonNull String taskId) {
+
         // Not required for the remote data source because the {@link TasksRepository} handles
         // converting from a {@code taskId} to a {@link task} using its cached data.
     }
 
     @Override
     public void activateTask(@NonNull Task task) {
-        Task activeTask = new Task(task.getTitle(), task.getDescription(), task.getId());
-        TASKS_SERVICE_DATA.put(task.getId(), activeTask);
+        task.setCompleted(false);
+        updateTask(task);
+
+       /* Task activeTask = new Task(task.getTitle(), task.getDescription(), task.getId());
+        TASKS_SERVICE_DATA.put(task.getId(), activeTask);*/
     }
 
     @Override
@@ -178,13 +230,13 @@ public class TasksRemoteAirDataSource implements TasksDataSource {
 
     @Override
     public void clearCompletedTasks() {
-        Iterator<Map.Entry<String, Task>> it = TASKS_SERVICE_DATA.entrySet().iterator();
+        /*Iterator<Map.Entry<String, Task>> it = TASKS_SERVICE_DATA.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<String, Task> entry = it.next();
             if (entry.getValue().isCompleted()) {
                 it.remove();
             }
-        }
+        }*/
     }
 
     @Override
@@ -195,11 +247,11 @@ public class TasksRemoteAirDataSource implements TasksDataSource {
 
     @Override
     public void deleteAllTasks() {
-        TASKS_SERVICE_DATA.clear();
+        //TASKS_SERVICE_DATA.clear();
     }
 
     @Override
     public void deleteTask(@NonNull String taskId) {
-        TASKS_SERVICE_DATA.remove(taskId);
+       // TASKS_SERVICE_DATA.remove(taskId);
     }
 }
