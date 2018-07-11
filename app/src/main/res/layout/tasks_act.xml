@@ -61,7 +61,9 @@
                 app:fabSize="normal"
                 app:layout_anchor="@id/contentFrame"
                 app:layout_anchorGravity="bottom|right|end" />
+            <!--<include layout="@layout/bottom"/>-->
         </android.support.design.widget.CoordinatorLayout>
+
 
     </LinearLayout>
 
@@ -74,5 +76,7 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_actions" />
+
+
 
 </android.support.v4.widget.DrawerLayout>
