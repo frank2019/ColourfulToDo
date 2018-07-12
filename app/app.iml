@@ -135,6 +135,7 @@
     <orderEntry type="library" exported="" name="gson-2.8.2" level="project" />
     <orderEntry type="library" exported="" name="support-media-compat-26.1.0" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-26.1.0" level="project" />
+    <orderEntry type="library" exported="" name="bottom-navigation-bar-2.0.4" level="project" />
     <orderEntry type="library" exported="" name="support-vector-drawable-26.1.0" level="project" />
     <orderEntry type="library" exported="" name="db-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-26.1.0" level="project" />

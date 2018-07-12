@@ -82,6 +82,8 @@ dependencies {
     compile "android.arch.persistence.room:runtime:$rootProject.roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
 
+    compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
+
   /*  // Dependencies for local unit tests
     testCompile "junit:junit:$rootProject.ext.junitVersion"
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"

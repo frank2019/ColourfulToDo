@@ -18,7 +18,7 @@
     <color name="colorPrimary">#455A64</color>
     <color name="colorPrimaryDark">#263238</color>
     <color name="colorAccent">#D50000</color>
-
+    <color name="bottom_tab_text_color">#1296db</color>
     <drawable name="completedTaskBackground">#CCCCCC</drawable>
 
     <drawable name="touchFeedback">#CFD8DC</drawable>

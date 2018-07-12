@@ -44,7 +44,7 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class TasksActivity extends AppCompatActivity {
-    final private String TAG = "TasksActivity";
+    final private String TAG = "TomatoTasksActivity";
 
     private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
 
@@ -102,8 +102,6 @@ public class TasksActivity extends AppCompatActivity {
             mTasksPresenter.setFiltering(currentFiltering);
         }
     }
-
-
 
 
 
