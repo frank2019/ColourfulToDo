@@ -55,8 +55,6 @@ public class TasksRemoteAirDataSource implements TasksDataSource {
     private static final int SERVICE_LATENCY_IN_MILLIS = 5000;
 
 
-
-
   /*  private final static Map<String, Task> TASKS_SERVICE_DATA;
 
     static {

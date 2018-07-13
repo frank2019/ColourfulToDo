@@ -226,6 +226,10 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         }
     };
 
+    /**
+     * 设置是否刷新
+     * @param active
+     */
     @Override
     public void setLoadingIndicator(final boolean active) {
 
@@ -236,6 +240,7 @@ public class TasksFragment extends Fragment implements TasksContract.View {
                 (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
 
         // Make sure setRefreshing() is called after the layout is done with everything else.
+        //在主线程中调用
         srl.post(new Runnable() {
             @Override
             public void run() {
