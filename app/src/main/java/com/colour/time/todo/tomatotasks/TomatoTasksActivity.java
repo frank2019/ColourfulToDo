@@ -16,8 +16,6 @@
 
 package com.colour.time.todo.tomatotasks;
 
-//import android.app.FragmentManager;
-//import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,6 +42,7 @@ import com.colour.time.todo.statistics.StatisticsActivity;
 import com.colour.time.todo.tasks.TasksFilterType;
 import com.colour.time.todo.tasks.TasksFragment;
 import com.colour.time.todo.tasks.TasksPresenter;
+import com.colour.time.todo.tomatoclockdetail.TomatoClockDetailActivity;
 import com.colour.time.todo.util.ActivityUtils;
 import com.colour.time.todo.util.AppExecutors;
 import com.colour.time.todo.util.TickEvent;
@@ -89,7 +88,6 @@ public class TomatoTasksActivity extends AppCompatActivity implements BottomNavi
             @Override
             public void onWorkingTimeTick(Context context, final Toolbar toolbar, final long t) {
 
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -104,8 +102,6 @@ public class TomatoTasksActivity extends AppCompatActivity implements BottomNavi
 
             @Override
             public void onRestTimeTick(Context context, final Toolbar toolbar, final long t) {
-
-
 
 
                 runOnUiThread(new Runnable() {
@@ -135,12 +131,19 @@ public class TomatoTasksActivity extends AppCompatActivity implements BottomNavi
 
             @Override
             public void onWorkTimeStart(Context context) {
-
+                Log.e(TAG,"onWorkTimeStart");
+                Intent i =  new Intent();
+                i.setClass(context,TomatoClockDetailActivity.class);
+                context.startActivity(i);
             }
+
 
             @Override
             public void onRestTimeStart(Context context) {
-
+                Log.e(TAG,"onRestTimeStart");
+                Intent i =  new Intent();
+                i.setClass(context,TomatoClockDetailActivity.class);
+                context.startActivity(i);
             }
         });
 
@@ -297,9 +300,14 @@ public class TomatoTasksActivity extends AppCompatActivity implements BottomNavi
      */
     @Override
     public void onTabReselected(int position) {
-
+        switch (position) {
+            case 1:
+                TomatoClock.getInstance(getApplicationContext()).click();
+                break;
+            default:
+                break;
+        }
     }
-
 
 
 

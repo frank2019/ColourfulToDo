@@ -32,11 +32,11 @@ public class MyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_fragment, container, false);
-        Bundle bundle = getArguments();
+        View view = inflater.inflate(R.layout.fragment_setting, container, false);
+       /* Bundle bundle = getArguments();
         String agrs1 = bundle.getString("agrs1");
         TextView tv = (TextView)view.findViewById(R.id.container);
-        tv.setText(agrs1);
+        tv.setText(agrs1);*/
         return view;
     }
 }

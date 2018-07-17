@@ -44,10 +44,6 @@ public class TomatoClock {
     Timer mTimer = new Timer();
 
 
-
-
-
-
     private static class SingleHolder{
         public static TomatoClock instance = new TomatoClock();
     }
@@ -76,8 +72,9 @@ public class TomatoClock {
         return mContext;
     }
 
-    public void setContext(Context mContext) {
+    public TomatoClock setContext(Context mContext) {
         this.mContext = mContext;
+        return this;
     }
 
 
@@ -93,7 +90,7 @@ public class TomatoClock {
      * 按键的点击事件
      */
     public void click(){
-
+        Log.e(TAG,"mState=" + mState);
         switch(mState){
             case  STATE_RESTTIME_DONE:
                 //mTomatoEvent.onWorkTimeDone(mContext);
@@ -103,7 +100,7 @@ public class TomatoClock {
                 break;
             case  STATE_WORKTIME_START:
                 //已经开启番茄时钟，什么也不需要做
-                //mTomatoEvent.onWorkTimeStart(mContext);
+                mTomatoEvent.onWorkTimeStart(mContext);
                 break;
             case  STATE_WORKTIME_DONE:
                 //提交任务
@@ -112,6 +109,7 @@ public class TomatoClock {
                 mState = STATE_RESTTIME_START;
                 break;
             case  STATE_RESTTIME_START:
+                mTomatoEvent.onRestTimeStart(mContext);
                 break;
         }
     }
@@ -121,7 +119,7 @@ public class TomatoClock {
      */
     public void tick(){
 
-        Log.e(TAG,"tick");
+        //Log.e(TAG,"tick");
 
         switch(mState){
             case  STATE_RESTTIME_DONE:
